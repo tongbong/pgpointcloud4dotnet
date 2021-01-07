@@ -44,7 +44,7 @@ namespace Pgpointcloud4dotnet
                     case interpretationType.int8_t:
                         {
                             step = 1;
-                            newValue = ExtractValue<byte>(wkb, index, step);
+                            newValue = ExtractValue<sbyte>(wkb, index, step);
                             break;
                         }
 
@@ -66,6 +66,34 @@ namespace Pgpointcloud4dotnet
                         {
                             step = 8;
                             newValue = ExtractValue<long>(wkb, index, step);
+                            break;
+                        }
+
+                    case interpretationType.uint8_t:
+                        {
+                            step = 1;
+                            newValue = ExtractValue<byte>(wkb, index, step);
+                            break;
+                        }
+
+                    case interpretationType.uint16_t:
+                        {
+                            step = 2;
+                            newValue = ExtractValue<ushort>(wkb, index, step);
+                            break;
+                        }
+
+                    case interpretationType.uint32_t:
+                        {
+                            step = 4;
+                            newValue = ExtractValue<uint>(wkb, index, step);
+                            break;
+                        }
+
+                    case interpretationType.uint64_t:
+                        {
+                            step = 8;
+                            newValue = ExtractValue<ulong>(wkb, index, step);
                             break;
                         }
 

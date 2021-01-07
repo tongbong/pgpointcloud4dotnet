@@ -20,6 +20,13 @@ namespace Pgpointcloud4dotnet.Tests
             return schema;
         }
 
+        private Point Deserialize(string wkb, string schemaFile)
+        {
+            PointCloudSchema schema = LoadSchemaFromFile(schemaFile);
+            Point point = schema.DeserializePointFromWkb(wkb);
+            return point;
+        }
+
         [Fact]
         public void LoadModel_Ok()
         {
@@ -30,33 +37,57 @@ namespace Pgpointcloud4dotnet.Tests
         [Fact]
         public void Deserialize_8bits_Integer()
         {
-            PointCloudSchema schema = LoadSchemaFromFile("Models/Model_For_8bits_Integer.xml");
-            Point point = schema.DeserializePointFromWkb("010300000000000A");
-            Assert.Equal((byte)10, point.DimensionAsByte("A"));
+            Point point = Deserialize("010300000000000A", "Models/Integers/Model_For_8bits_Integer.xml");
+            Assert.Equal((sbyte)10, point.DimensionAsSbyte("A"));
         }
 
         [Fact]
         public void Deserialize_16bits_Integer()
         {
-            PointCloudSchema schema = LoadSchemaFromFile("Models/Model_For_16bits_Integer.xml");
-            Point point = schema.DeserializePointFromWkb("010400000000000A00");
+            Point point = Deserialize("010400000000000A00", "Models/Integers/Model_For_16bits_Integer.xml");
             Assert.Equal((short)10, point.DimensionAsShort("A"));
         }
 
         [Fact]
         public void Deserialize_32bits_Integer()
         {
-            PointCloudSchema schema = LoadSchemaFromFile("Models/Model_For_32bits_Integer.xml");
-            Point point = schema.DeserializePointFromWkb("010500000000000A000000");
+            Point point = Deserialize("010500000000000A000000", "Models/Integers/Model_For_32bits_Integer.xml");
             Assert.Equal((int)10, point.DimensionAsInt("A"));
         }
 
         [Fact]
         public void Deserialize_64bits_Integer()
         {
-            PointCloudSchema schema = LoadSchemaFromFile("Models/Model_For_64bits_Integer.xml");
-            Point point = schema.DeserializePointFromWkb("010600000000000A00000000000000");
+            Point point = Deserialize("010600000000000A00000000000000", "Models/Integers/Model_For_64bits_Integer.xml");
             Assert.Equal((long)10, point.DimensionAsLong("A"));
+        }
+
+        [Fact]
+        public void Deserialize_8bits_UnsignedInteger()
+        {
+            Point point = Deserialize("010700000000000A", "Models/UnsignedIntegers/Model_For_8bits_UnsignedInteger.xml");
+            Assert.Equal((byte)10, point.DimensionAsByte("A"));
+        }
+
+        [Fact]
+        public void Deserialize_16bits_UnsignedInteger()
+        {
+            Point point = Deserialize("010800000000000A00", "Models/UnsignedIntegers/Model_For_16bits_UnsignedInteger.xml");
+            Assert.Equal((ushort)10, point.DimensionAsUshort("A"));
+        }
+
+        [Fact]
+        public void Deserialize_32bits_UnsignedInteger()
+        {
+            Point point = Deserialize("010900000000000A000000", "Models/UnsignedIntegers/Model_For_32bits_UnsignedInteger.xml");
+            Assert.Equal((uint)10, point.DimensionAsUint("A"));
+        }
+
+        [Fact]
+        public void Deserialize_64bits_UnsignedInteger()
+        {
+            Point point = Deserialize("010A00000000000A00000000000000", "Models/UnsignedIntegers/Model_For_64bits_UnsignedInteger.xml");
+            Assert.Equal((ulong)10, point.DimensionAsUlong("A"));
         }
 
         [Fact]

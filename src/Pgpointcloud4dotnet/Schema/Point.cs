@@ -20,9 +20,9 @@ namespace Pgpointcloud4dotnet
             return DimensionAs<float>(dimensionName);
         }
 
-        public byte DimensionAsByte(string dimensionName)
+        public sbyte DimensionAsSbyte(string dimensionName)
         {
-            return DimensionAs<byte>(dimensionName);
+            return DimensionAs<sbyte>(dimensionName);
         }
 
         public short DimensionAsShort(string dimensionName)
@@ -38,6 +38,26 @@ namespace Pgpointcloud4dotnet
         public long DimensionAsLong(string dimensionName)
         {
             return DimensionAs<long>(dimensionName);
+        }
+
+        public byte DimensionAsByte(string dimensionName)
+        {
+            return DimensionAs<byte>(dimensionName);
+        }
+
+        public ushort DimensionAsUshort(string dimensionName)
+        {
+            return DimensionAs<ushort>(dimensionName);
+        }
+
+        public uint DimensionAsUint(string dimensionName)
+        {
+            return DimensionAs<uint>(dimensionName);
+        }
+
+        public ulong DimensionAsUlong(string dimensionName)
+        {
+            return DimensionAs<ulong>(dimensionName);
         }
 
         private T DimensionAs<T>(string dimensionName)
