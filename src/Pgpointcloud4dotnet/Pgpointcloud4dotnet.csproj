@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <RootNamespace>Pgpointcloud4dotnet</RootNamespace>
+    <AssemblyName>Pgpointcloud4dotnet</AssemblyName>
+  </PropertyGroup>
+
+</Project>

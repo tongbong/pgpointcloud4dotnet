@@ -1,0 +1,1 @@
+FROM pgpointcloud/pointcloud
