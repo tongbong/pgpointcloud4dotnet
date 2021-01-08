@@ -1,5 +1,7 @@
 # pgpointcloud4dotnet
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=tongbong_pgpointcloud4dotnet&metric=alert_status)](https://sonarcloud.io/dashboard?id=tongbong_pgpointcloud4dotnet)
+
 Schema
 | Attribute | Supported |
 |:---------------:|:-------------:|
