@@ -100,7 +100,7 @@ namespace Pgpointcloud4dotnet.Tests
             Point point = schema.DeserializePointFromWkb("0101000000FC3C26459E87A342980B05C3");
             //Assert.Equal((uint)1, point.SchemaId);
 
-            Assert.Equal((float)2659.81, point.DimensionAsFloat("X"), 2); ;
+            Assert.Equal((float)2659.81, point.DimensionAsFloat("X"), 2);
 
             //string wkbAsString = "0101000000FC3C26459E87A342980B05C3";
             //// { "pcid":1,"pt":[26.5981,0.817649,-1.33045]}

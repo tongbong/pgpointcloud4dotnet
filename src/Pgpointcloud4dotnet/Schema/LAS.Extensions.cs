@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Pgpointcloud4dotnet
 {
@@ -25,13 +24,13 @@ namespace Pgpointcloud4dotnet
         {
             Point point = new Point();
 
-            IEnumerable<dimensionType> dimensions = dimension.ToList().OrderBy(x => Convert.ToInt32(x.position));
+            IEnumerable<dimensionType> dimensions = dimension.OrderBy(x => Convert.ToInt32(x.position));
             int index = 5;
-            foreach (var dimension in dimensions)
+            foreach (var d in dimensions)
             {
                 object newValue = null;
                 int step = 0;
-                switch (dimension.interpretation)
+                switch (d.interpretation)
                 {
 
                     case interpretationType.@float:
@@ -98,9 +97,9 @@ namespace Pgpointcloud4dotnet
                         }
 
                     default:
-                        throw new InvalidOperationException("Type " + dimension.interpretation + " is not supported");
+                        throw new InvalidOperationException("Type " + d.interpretation + " is not supported");
                 }
-                point[dimension.name] = newValue;
+                point[d.name] = newValue;
                 index += step;
             }
             return point;
