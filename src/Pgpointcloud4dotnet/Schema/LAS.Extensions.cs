@@ -40,6 +40,13 @@ namespace Pgpointcloud4dotnet
                             break;
                         }
 
+                    case interpretationType.@double:
+                        {
+                            step = 8;
+                            newValue = ExtractValue<double>(wkb, index, step);
+                            break;
+                        }
+
                     case interpretationType.int8_t:
                         {
                             step = 1;

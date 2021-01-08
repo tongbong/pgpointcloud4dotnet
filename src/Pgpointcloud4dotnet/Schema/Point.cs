@@ -20,6 +20,11 @@ namespace Pgpointcloud4dotnet
             return DimensionAs<float>(dimensionName);
         }
 
+        public double DimensionAsDouble(string dimensionName)
+        {
+            return DimensionAs<double>(dimensionName);
+        }
+
         public sbyte DimensionAsSbyte(string dimensionName)
         {
             return DimensionAs<sbyte>(dimensionName);

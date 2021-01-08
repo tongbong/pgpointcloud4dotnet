@@ -90,6 +90,20 @@ namespace Pgpointcloud4dotnet.Tests
         }
 
         [Fact]
+        public void Deserialize_32bits_FloatingPoint()
+        {
+            Point point = Deserialize("010B000000000000002841", "Models/FloatingPoints/Model_For_32bits_FloatingPoint.xml");
+            Assert.Equal((float)10.5, point.DimensionAsFloat("A"), 1);
+        }
+
+        [Fact]
+        public void Deserialize_64bits_FloatingPoint()
+        {
+            Point point = Deserialize("010C00000000000000000000002540", "Models/FloatingPoints/Model_For_64bits_FloatingPoint.xml");
+            Assert.Equal((double)10.5, point.DimensionAsDouble("A"), 1);
+        }
+
+        [Fact]
         public void Foo()
         {
             // https://adamstorr.azurewebsites.net/blog/span-t-byte-int-conversions-update

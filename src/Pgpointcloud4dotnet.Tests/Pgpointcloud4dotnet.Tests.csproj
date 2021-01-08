@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Models\FloatingPoints\Model_For_32bits_FloatingPoint.xml" />
+    <None Remove="Models\FloatingPoints\Model_For_64bits_FloatingPoint.xml" />
     <None Remove="Models\Model1.xml" />
     <None Remove="Models\Model_For_16bits_Integer.xml" />
     <None Remove="Models\Model_For_32bits_Integer.xml" />
@@ -19,6 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Models\FloatingPoints\Model_For_32bits_FloatingPoint.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\FloatingPoints\Model_For_64bits_FloatingPoint.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Models\Integers\Model_For_64bits_Integer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
