@@ -1,12 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Xml.Serialization;
 
 namespace Pgpointcloud4dotnet
 {
     public partial class PointCloudSchema
     {
+
+        public static PointCloudSchema LoadSchemaFromFile(string schemaFile)
+        {
+            XmlSerializer deserialize = new XmlSerializer(typeof(PointCloudSchema));
+            PointCloudSchema schema = null;
+            using (var stream = File.OpenRead(schemaFile))
+            {
+                schema = (PointCloudSchema)deserialize.Deserialize(stream);
+            }
+            return schema;
+        }
+
         public Point DeserializePointFromWkb(string wkbAsString)
         {
             byte[] wkb = StringToByteArray(wkbAsString);

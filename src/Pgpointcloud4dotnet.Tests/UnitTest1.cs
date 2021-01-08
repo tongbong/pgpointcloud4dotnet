@@ -8,30 +8,19 @@ namespace Pgpointcloud4dotnet.Tests
     public class UnitTest1
     {
 
-        PointCloudSchema LoadSchemaFromFile(string schemaFile)
-        {
-            XmlSerializer deserialize = new XmlSerializer(typeof(PointCloudSchema));
-            PointCloudSchema schema = null;
-            using (var stream = File.OpenRead(schemaFile))
-            {
-                schema = (PointCloudSchema)deserialize.Deserialize(stream);
-            }
-            return schema;
-        }
-
         private Point Deserialize(string wkb, string schemaFile)
         {
-            PointCloudSchema schema = LoadSchemaFromFile(schemaFile);
+            PointCloudSchema schema = PointCloudSchema.LoadSchemaFromFile(schemaFile);
             Point point = schema.DeserializePointFromWkb(wkb);
             return point;
         }
 
-        [Fact]
-        public void LoadModel_Ok()
-        {
-            PointCloudSchema schema = LoadSchemaFromFile("Models/Model1.xml");
-            Assert.NotNull(schema);
-        }
+        //[Fact]
+        //public void LoadModel_Ok()
+        //{
+        //    PointCloudSchema schema = LoadSchemaFromFile("Models/Model1.xml");
+        //    Assert.NotNull(schema);
+        //}
 
         [Fact]
         public void Deserialize_8bits_Integer()
@@ -103,42 +92,42 @@ namespace Pgpointcloud4dotnet.Tests
             Assert.Equal((double)10.5, point.DimensionAsDouble("A"), 1);
         }
 
-        [Fact]
-        public void Foo()
-        {
-            // https://adamstorr.azurewebsites.net/blog/span-t-byte-int-conversions-update
+        //[Fact]
+        //public void Foo()
+        //{
+        //    // https://adamstorr.azurewebsites.net/blog/span-t-byte-int-conversions-update
 
-            PointCloudSchema schema = LoadSchemaFromFile("Models/Model1.xml");
+        //    PointCloudSchema schema = LoadSchemaFromFile("Models/Model1.xml");
 
-            Point point = schema.DeserializePointFromWkb("0101000000FC3C26459E87A342980B05C3");
-            //Assert.Equal((uint)1, point.SchemaId);
+        //    Point point = schema.DeserializePointFromWkb("0101000000FC3C26459E87A342980B05C3");
+        //    //Assert.Equal((uint)1, point.SchemaId);
 
-            Assert.Equal((float)2659.81, point.DimensionAsFloat("X"), 2);
+        //    Assert.Equal((float)2659.81, point.DimensionAsFloat("X"), 2);
 
 
-            //string wkbAsString = "0101000000FC3C26459E87A342980B05C3";
-            //// { "pcid":1,"pt":[26.5981,0.817649,-1.33045]}
-            //byte[] wkb = StringToByteArray(wkbAsString);
+        //    //string wkbAsString = "0101000000FC3C26459E87A342980B05C3";
+        //    //// { "pcid":1,"pt":[26.5981,0.817649,-1.33045]}
+        //    //byte[] wkb = StringToByteArray(wkbAsString);
 
-            //byte endianness = wkb[0];
+        //    //byte endianness = wkb[0];
 
-            //Span<byte> pcidAsBytes = new Span<byte>(wkb, 1, 4);
-            //uint pcid = MemoryMarshal.Read<uint>(pcidAsBytes);
-            //Assert.Equal((uint)1, pcid);
+        //    //Span<byte> pcidAsBytes = new Span<byte>(wkb, 1, 4);
+        //    //uint pcid = MemoryMarshal.Read<uint>(pcidAsBytes);
+        //    //Assert.Equal((uint)1, pcid);
 
-            //Span<byte> xAsBytes = new Span<byte>(wkb, 5, 4);
-            //var b = BitConverter.IsLittleEndian;
-            //float x = MemoryMarshal.Read<float>(xAsBytes);
-            //Assert.Equal((float)26.59, (float)x, 2);
+        //    //Span<byte> xAsBytes = new Span<byte>(wkb, 5, 4);
+        //    //var b = BitConverter.IsLittleEndian;
+        //    //float x = MemoryMarshal.Read<float>(xAsBytes);
+        //    //Assert.Equal((float)26.59, (float)x, 2);
 
-            //Span<byte> yAsBytes = new Span<byte>(wkb, 9, 4);
-            //float y = MemoryMarshal.Read<float>(yAsBytes);
-            //Assert.Equal((float)0.81, (float)y, 2);
+        //    //Span<byte> yAsBytes = new Span<byte>(wkb, 9, 4);
+        //    //float y = MemoryMarshal.Read<float>(yAsBytes);
+        //    //Assert.Equal((float)0.81, (float)y, 2);
 
-            //Span<byte> zAsBytes = new Span<byte>(wkb, 13, 4);
-            //float z = MemoryMarshal.Read<float>(zAsBytes);
-            //Assert.Equal((float)-1.33, (float)z, 2);
-        }
+        //    //Span<byte> zAsBytes = new Span<byte>(wkb, 13, 4);
+        //    //float z = MemoryMarshal.Read<float>(zAsBytes);
+        //    //Assert.Equal((float)-1.33, (float)z, 2);
+        //}
 
         public static byte[] StringToByteArray(string hex)
         {
