@@ -42,7 +42,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"tongbong_pgpointcloud4dotnet" /o:"tongbong-github" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build .\src\Pgpointcloud4dotnet.sln
-          dotnet test .\src\Pgpointcloud4dotnet.sln
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"tongbong_pgpointcloud4dotnet" /o:"tongbong-github" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.coverage.exclusions=”**Test*.cs /d:sonar.cs.opencover.reportsPaths=coverage.opencover.xml
+          dotnet test .\src\Pgpointcloud4dotnet.sln /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
