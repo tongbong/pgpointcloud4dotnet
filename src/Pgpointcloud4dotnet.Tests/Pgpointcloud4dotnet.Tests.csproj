@@ -7,55 +7,63 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Models\FloatingPoints\Model_For_32bits_FloatingPoint.xml" />
-    <None Remove="Models\FloatingPoints\Model_For_64bits_FloatingPoint.xml" />
+    <None Remove="Models\Patches\Model_Dimensional_Deflate.xml" />
+    <None Remove="Models\Patches\Model_NoCompression.xml" />
+    <None Remove="Models\Points\FloatingPoints\Model_For_32bits_FloatingPoint.xml" />
+    <None Remove="Models\Points\FloatingPoints\Model_For_64bits_FloatingPoint.xml" />
     <None Remove="Models\Model1.xml" />
     <None Remove="Models\Model_For_16bits_Integer.xml" />
     <None Remove="Models\Model_For_32bits_Integer.xml" />
     <None Remove="Models\Model_For_64bits_Integer.xml" />
     <None Remove="Models\Model_For_8bits_Integer.xml" />
     <None Remove="Models\Model_For_Active.xml" />
-    <None Remove="Models\UnsignedIntegers\Model_For_16bits_UnsignedInteger.xml" />
-    <None Remove="Models\UnsignedIntegers\Model_For_32bits_UnsignedInteger.xml" />
-    <None Remove="Models\UnsignedIntegers\Model_For_64bits_UnsignedInteger.xml" />
-    <None Remove="Models\UnsignedIntegers\Model_For_8bits_UnsignedInteger.xml" />
+    <None Remove="Models\Points\UnsignedIntegers\Model_For_16bits_UnsignedInteger.xml" />
+    <None Remove="Models\Points\UnsignedIntegers\Model_For_32bits_UnsignedInteger.xml" />
+    <None Remove="Models\Points\UnsignedIntegers\Model_For_64bits_UnsignedInteger.xml" />
+    <None Remove="Models\Points\UnsignedIntegers\Model_For_8bits_UnsignedInteger.xml" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Models\FloatingPoints\Model_For_32bits_FloatingPoint.xml">
+    <Content Include="Models\Patches\Model_Dimensional_Deflate.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\FloatingPoints\Model_For_64bits_FloatingPoint.xml">
+    <Content Include="Models\Patches\Model_NoCompression.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\Integers\Model_For_64bits_Integer.xml">
+    <Content Include="Models\Points\FloatingPoints\Model_For_32bits_FloatingPoint.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\Integers\Model_For_32bits_Integer.xml">
+    <Content Include="Models\Points\FloatingPoints\Model_For_64bits_FloatingPoint.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\Integers\Model_For_16bits_Integer.xml">
+    <Content Include="Models\Points\Integers\Model_For_64bits_Integer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\Integers\Model_For_8bits_Integer.xml">
+    <Content Include="Models\Points\Integers\Model_For_32bits_Integer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\Model_For_Active.xml">
+    <Content Include="Models\Points\Integers\Model_For_16bits_Integer.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\Points\Integers\Model_For_8bits_Integer.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\Points\Model_For_Active.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Models\Model1.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\UnsignedIntegers\Model_For_16bits_UnsignedInteger.xml">
+    <Content Include="Models\Points\UnsignedIntegers\Model_For_16bits_UnsignedInteger.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\UnsignedIntegers\Model_For_32bits_UnsignedInteger.xml">
+    <Content Include="Models\Points\UnsignedIntegers\Model_For_32bits_UnsignedInteger.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\UnsignedIntegers\Model_For_64bits_UnsignedInteger.xml">
+    <Content Include="Models\Points\UnsignedIntegers\Model_For_64bits_UnsignedInteger.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\UnsignedIntegers\Model_For_8bits_UnsignedInteger.xml">
+    <Content Include="Models\Points\UnsignedIntegers\Model_For_8bits_UnsignedInteger.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -88,7 +96,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="UnitTest1.cs">
+    <Compile Update="PointTests.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>

@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Pgpointcloud4dotnet.Tests
 {
-    public class UnitTest1
+    public class PointTests
     {
 
         private Point Deserialize(string wkb, string schemaFile)
@@ -25,77 +25,77 @@ namespace Pgpointcloud4dotnet.Tests
         [Fact]
         public void Deserialize_8bits_Integer()
         {
-            Point point = Deserialize("010300000000000A", "Models/Integers/Model_For_8bits_Integer.xml");
+            Point point = Deserialize("010300000000000A", "Models/Points/Integers/Model_For_8bits_Integer.xml");
             Assert.Equal((sbyte)10, point.DimensionAsSbyte("A"));
         }
 
         [Fact]
         public void Deserialize_16bits_Integer()
         {
-            Point point = Deserialize("010400000000000A00", "Models/Integers/Model_For_16bits_Integer.xml");
+            Point point = Deserialize("010400000000000A00", "Models/Points/Integers/Model_For_16bits_Integer.xml");
             Assert.Equal((short)10, point.DimensionAsShort("A"));
         }
 
         [Fact]
         public void Deserialize_32bits_Integer()
         {
-            Point point = Deserialize("010500000000000A000000", "Models/Integers/Model_For_32bits_Integer.xml");
+            Point point = Deserialize("010500000000000A000000", "Models/Points/Integers/Model_For_32bits_Integer.xml");
             Assert.Equal((int)10, point.DimensionAsInt("A"));
         }
 
         [Fact]
         public void Deserialize_64bits_Integer()
         {
-            Point point = Deserialize("010600000000000A00000000000000", "Models/Integers/Model_For_64bits_Integer.xml");
+            Point point = Deserialize("010600000000000A00000000000000", "Models/Points/Integers/Model_For_64bits_Integer.xml");
             Assert.Equal((long)10, point.DimensionAsLong("A"));
         }
 
         [Fact]
         public void Deserialize_8bits_UnsignedInteger()
         {
-            Point point = Deserialize("010700000000000A", "Models/UnsignedIntegers/Model_For_8bits_UnsignedInteger.xml");
+            Point point = Deserialize("010700000000000A", "Models/Points/UnsignedIntegers/Model_For_8bits_UnsignedInteger.xml");
             Assert.Equal((byte)10, point.DimensionAsByte("A"));
         }
 
         [Fact]
         public void Deserialize_16bits_UnsignedInteger()
         {
-            Point point = Deserialize("010800000000000A00", "Models/UnsignedIntegers/Model_For_16bits_UnsignedInteger.xml");
+            Point point = Deserialize("010800000000000A00", "Models/Points/UnsignedIntegers/Model_For_16bits_UnsignedInteger.xml");
             Assert.Equal((ushort)10, point.DimensionAsUshort("A"));
         }
 
         [Fact]
         public void Deserialize_32bits_UnsignedInteger()
         {
-            Point point = Deserialize("010900000000000A000000", "Models/UnsignedIntegers/Model_For_32bits_UnsignedInteger.xml");
+            Point point = Deserialize("010900000000000A000000", "Models/Points/UnsignedIntegers/Model_For_32bits_UnsignedInteger.xml");
             Assert.Equal((uint)10, point.DimensionAsUint("A"));
         }
 
         [Fact]
         public void Deserialize_64bits_UnsignedInteger()
         {
-            Point point = Deserialize("010A00000000000A00000000000000", "Models/UnsignedIntegers/Model_For_64bits_UnsignedInteger.xml");
+            Point point = Deserialize("010A00000000000A00000000000000", "Models/Points/UnsignedIntegers/Model_For_64bits_UnsignedInteger.xml");
             Assert.Equal((ulong)10, point.DimensionAsUlong("A"));
         }
 
         [Fact]
         public void Deserialize_32bits_FloatingPoint()
         {
-            Point point = Deserialize("010B000000000000002841", "Models/FloatingPoints/Model_For_32bits_FloatingPoint.xml");
+            Point point = Deserialize("010B000000000000002841", "Models/Points/FloatingPoints/Model_For_32bits_FloatingPoint.xml");
             Assert.Equal((float)10.5, point.DimensionAsFloat("A"), 1);
         }
 
         [Fact]
         public void Deserialize_64bits_FloatingPoint()
         {
-            Point point = Deserialize("010C00000000000000000000002540", "Models/FloatingPoints/Model_For_64bits_FloatingPoint.xml");
+            Point point = Deserialize("010C00000000000000000000002540", "Models/Points/FloatingPoints/Model_For_64bits_FloatingPoint.xml");
             Assert.Equal((double)10.5, point.DimensionAsDouble("A"), 1);
         }
 
         [Fact]
         public void Deserialize_Active()
         {
-            Point point = Deserialize("010D000000000020410000A040", "Models/Model_For_Active.xml");
+            Point point = Deserialize("010D000000000020410000A040", "Models/Points/Model_For_Active.xml");
             Assert.Equal((float)0, point.DimensionAsFloat("X"), 1);
             Assert.Equal((float)5, point.DimensionAsFloat("Y"), 1);
         }
