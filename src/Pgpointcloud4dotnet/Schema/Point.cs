@@ -15,58 +15,60 @@ namespace Pgpointcloud4dotnet
             set { _dimensionValues[dimensionName] = value; }
         }
 
-        public float DimensionAsFloat(string dimensionName)
+        public float? DimensionAsFloat(string dimensionName)
         {
             return DimensionAs<float>(dimensionName);
         }
 
-        public double DimensionAsDouble(string dimensionName)
+        public double? DimensionAsDouble(string dimensionName)
         {
             return DimensionAs<double>(dimensionName);
         }
 
-        public sbyte DimensionAsSbyte(string dimensionName)
+        public sbyte? DimensionAsSbyte(string dimensionName)
         {
             return DimensionAs<sbyte>(dimensionName);
         }
 
-        public short DimensionAsShort(string dimensionName)
+        public short? DimensionAsShort(string dimensionName)
         {
             return DimensionAs<short>(dimensionName);
         }
 
-        public int DimensionAsInt(string dimensionName)
+        public int? DimensionAsInt(string dimensionName)
         {
             return DimensionAs<int>(dimensionName);
         }
 
-        public long DimensionAsLong(string dimensionName)
+        public long? DimensionAsLong(string dimensionName)
         {
             return DimensionAs<long>(dimensionName);
         }
 
-        public byte DimensionAsByte(string dimensionName)
+        public byte? DimensionAsByte(string dimensionName)
         {
             return DimensionAs<byte>(dimensionName);
         }
 
-        public ushort DimensionAsUshort(string dimensionName)
+        public ushort? DimensionAsUshort(string dimensionName)
         {
             return DimensionAs<ushort>(dimensionName);
         }
 
-        public uint DimensionAsUint(string dimensionName)
+        public uint? DimensionAsUint(string dimensionName)
         {
             return DimensionAs<uint>(dimensionName);
         }
 
-        public ulong DimensionAsUlong(string dimensionName)
+        public ulong? DimensionAsUlong(string dimensionName)
         {
             return DimensionAs<ulong>(dimensionName);
         }
 
         private T DimensionAs<T>(string dimensionName)
         {
+            object value = this[dimensionName];
+            if (value == null) return default(T);
             return (T)this[dimensionName];
         }
     }
