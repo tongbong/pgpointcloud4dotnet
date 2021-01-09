@@ -82,22 +82,22 @@ namespace Pgpointcloud4dotnet.Tests
         public void Deserialize_32bits_FloatingPoint()
         {
             Point point = Deserialize("010B000000000000002841", "Models/FloatingPoints/Model_For_32bits_FloatingPoint.xml");
-            Assert.Equal((float)10.5, point.DimensionAsFloat("A").Value, 1);
+            Assert.Equal((float)10.5, point.DimensionAsFloat("A"), 1);
         }
 
         [Fact]
         public void Deserialize_64bits_FloatingPoint()
         {
             Point point = Deserialize("010C00000000000000000000002540", "Models/FloatingPoints/Model_For_64bits_FloatingPoint.xml");
-            Assert.Equal((double)10.5, point.DimensionAsDouble("A").Value, 1);
+            Assert.Equal((double)10.5, point.DimensionAsDouble("A"), 1);
         }
 
         [Fact]
         public void Deserialize_Active()
         {
             Point point = Deserialize("010D000000000020410000A040", "Models/Model_For_Active.xml");
-            Assert.Null(point.DimensionAsFloat("X"));
-            Assert.Equal((float)5, point.DimensionAsFloat("Y").Value, 1);
+            Assert.Equal((float)0, point.DimensionAsFloat("X"), 1);
+            Assert.Equal((float)5, point.DimensionAsFloat("Y"), 1);
         }
 
         //[Fact]

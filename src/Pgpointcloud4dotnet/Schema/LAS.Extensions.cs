@@ -136,12 +136,12 @@ namespace Pgpointcloud4dotnet
             return bytes;
         }
 
-        private static object ExtractValue<T>(dimensionType d, byte[] wkb, int index, int step)
+        private static T ExtractValue<T>(dimensionType d, byte[] wkb, int index, int step)
             where T : struct
         {
             if (!d.active)
             {
-                return null;
+                return default(T);
             }
             Span<byte> intAsBytes = new Span<byte>(wkb, index, step);
             return MemoryMarshal.Read<T>(intAsBytes);
