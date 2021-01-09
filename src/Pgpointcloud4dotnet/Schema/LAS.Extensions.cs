@@ -40,18 +40,15 @@ namespace Pgpointcloud4dotnet
             index += 1;
 
             // Read pcid
-            Span<byte> pcidAsBytes = new Span<byte>(wkb, index, 4);
-            uint pcid = MemoryMarshal.Read<uint>(pcidAsBytes);
+            uint pcid = Utils.Read<uint>(wkb, index, 4);
             index += 4;
 
             // Read compression
-            Span<byte> compressionAsBytes = new Span<byte>(wkb, index, 4);
-            uint compression = MemoryMarshal.Read<uint>(compressionAsBytes);
+            uint compression = Utils.Read<uint>(wkb, index, 4);
             index += 4;
 
             // Read number of points
-            Span<byte> numberOfPointsAsBytes = new Span<byte>(wkb, index, 4);
-            uint numberOfPoints = MemoryMarshal.Read<uint>(numberOfPointsAsBytes);
+            uint numberOfPoints = Utils.Read<uint>(wkb, index, 4);
             index += 4;
 
             Patch patch = new Patch(numberOfPoints);
@@ -80,16 +77,14 @@ namespace Pgpointcloud4dotnet
                                                             .OrderBy(x => Convert.ToInt32(x.position))
                                                             .ToList();
 
-                        for (int i = 0; i < dimensions.Count; i++)
+                        foreach (var dimension in dimensions)
                         {
                             // Read compression type
-                            Span<byte> compressionTypeAsBytes = new Span<byte>(wkb, index, 1);
-                            byte compressionType = MemoryMarshal.Read<byte>(compressionTypeAsBytes);
+                            byte compressionType = Utils.Read<byte>(wkb, index, 1);
                             index += 1;
 
                             // Read size of compressed data
-                            Span<byte> sizeOfCompressedDataAsBytes = new Span<byte>(wkb, index, 4);
-                            uint sizeOfCompressedData = MemoryMarshal.Read<uint>(sizeOfCompressedDataAsBytes);
+                            uint sizeOfCompressedData = Utils.Read<uint>(wkb, index, 4);
                             index += 4;
 
                             switch (compressionType)
@@ -116,13 +111,13 @@ namespace Pgpointcloud4dotnet
 
                                         byte[] uncompressedData = ZlibStream.UncompressBuffer(compressedDimensionData.ToArray());
 
-                                        int dimensionSize = Utils.GetDimensionSize(dimensions[i]);
+                                        int dimensionSize = Utils.GetDimensionSize(dimension);
 
                                         int dataIndex = 0;
                                         for (int pointIndex = 0; pointIndex < numberOfPoints; pointIndex++)
                                         {
                                             float dimensionValue = Utils.Read<float>(uncompressedData, dataIndex, dimensionSize);
-                                            patch.Points[pointIndex][dimensions[i].name] = dimensionValue;
+                                            patch.Points[pointIndex][dimension.name] = dimensionValue;
                                             dataIndex += dimensionSize;
                                         }
 
@@ -231,13 +226,6 @@ namespace Pgpointcloud4dotnet
         public Point DeserializePointFromWkb(string wkbAsString)
         {
             byte[] wkb = StringToByteArray(wkbAsString);
-
-            //byte endianness = wkb[0];
-
-            //Span<byte> pcidAsBytes = new Span<byte>(wkb, 1, 4);
-            //uint pcid = MemoryMarshal.Read<uint>(pcidAsBytes);
-            //Assert.Equal((uint)1, pcid);
-
             return DeserializePointFromWkb(wkb);
         }
 
@@ -250,76 +238,66 @@ namespace Pgpointcloud4dotnet
             foreach (var d in dimensions)
             {
                 object newValue = null;
-                int step = 0;
+                int step = Utils.GetDimensionSize(d);
                 switch (d.interpretation)
                 {
 
                     case interpretationType.@float:
                         {
-                            step = 4;
                             newValue = ExtractValue<float>(d, wkb, index, step);
                             break;
                         }
 
                     case interpretationType.@double:
                         {
-                            step = 8;
                             newValue = ExtractValue<double>(d, wkb, index, step);
                             break;
                         }
 
                     case interpretationType.int8_t:
                         {
-                            step = 1;
                             newValue = ExtractValue<sbyte>(d, wkb, index, step);
                             break;
                         }
 
                     case interpretationType.int16_t:
                         {
-                            step = 2;
                             newValue = ExtractValue<short>(d, wkb, index, step);
                             break;
                         }
 
                     case interpretationType.int32_t:
                         {
-                            step = 4;
                             newValue = ExtractValue<int>(d, wkb, index, step);
                             break;
                         }
 
                     case interpretationType.int64_t:
                         {
-                            step = 8;
                             newValue = ExtractValue<long>(d, wkb, index, step);
                             break;
                         }
 
                     case interpretationType.uint8_t:
                         {
-                            step = 1;
                             newValue = ExtractValue<byte>(d, wkb, index, step);
                             break;
                         }
 
                     case interpretationType.uint16_t:
                         {
-                            step = 2;
                             newValue = ExtractValue<ushort>(d, wkb, index, step);
                             break;
                         }
 
                     case interpretationType.uint32_t:
                         {
-                            step = 4;
                             newValue = ExtractValue<uint>(d, wkb, index, step);
                             break;
                         }
 
                     case interpretationType.uint64_t:
                         {
-                            step = 8;
                             newValue = ExtractValue<ulong>(d, wkb, index, step);
                             break;
                         }
@@ -343,15 +321,15 @@ namespace Pgpointcloud4dotnet
             return bytes;
         }
 
-        private static T ExtractValue<T>(dimensionType d, byte[] wkb, int index, int step)
+        private static T ExtractValue<T>(dimensionType d, byte[] binaryData, int dataIndex, int dataSize)
             where T : struct
         {
             if (!d.active)
             {
                 return default(T);
             }
-            Span<byte> intAsBytes = new Span<byte>(wkb, index, step);
-            return MemoryMarshal.Read<T>(intAsBytes);
+
+            return Utils.Read<T>(binaryData, dataIndex, dataSize);
         }
     }
 }

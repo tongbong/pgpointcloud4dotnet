@@ -67,10 +67,10 @@ namespace Pgpointcloud4dotnet.Schema
             }   
         }
 
-        internal static T Read<T>(byte[] data, int pointIndex, int dimensionSize)
+        internal static T Read<T>(byte[] binaryData, int startIndex, int dataSize)
             where T : struct
         {
-            Span<byte> dimensionValueAsBytes = new Span<byte>(data, pointIndex, dimensionSize);
+            Span<byte> dimensionValueAsBytes = new Span<byte>(binaryData, startIndex, dataSize);
             return MemoryMarshal.Read<T>(dimensionValueAsBytes);
         }
     }
