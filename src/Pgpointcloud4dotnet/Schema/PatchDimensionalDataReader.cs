@@ -68,7 +68,75 @@ namespace Pgpointcloud4dotnet.Schema
                             int dataIndex = 0;
                             for (int pointIndex = 0; pointIndex < Patch.NumberOfPoints; pointIndex++)
                             {
-                                float dimensionValue = Utils.Read<float>(uncompressedData, dataIndex, dimensionSize);
+                                object dimensionValue = null;
+
+                                switch (dimension.interpretation)
+                                {
+                                    case interpretationType.@float:
+                                        {
+                                            dimensionValue = Utils.Read<float>(uncompressedData, dataIndex, dimensionSize);
+                                            break;
+                                        }
+
+                                    case interpretationType.@double:
+                                        {
+                                            dimensionValue = Utils.Read<double>(uncompressedData, dataIndex, dimensionSize);
+                                            break;
+                                        }
+
+                                    case interpretationType.int8_t:
+                                        {
+                                            dimensionValue = Utils.Read<sbyte>(uncompressedData, dataIndex, dimensionSize);
+                                            break;
+                                        }
+
+                                    case interpretationType.int16_t:
+                                        {
+                                            dimensionValue = Utils.Read<ushort>(uncompressedData, dataIndex, dimensionSize);
+                                            break;
+                                        }
+
+                                    case interpretationType.int32_t:
+                                        {
+                                            dimensionValue = Utils.Read<int>(uncompressedData, dataIndex, dimensionSize);
+                                            break;
+                                        }
+
+                                    case interpretationType.int64_t:
+                                        {
+                                            dimensionValue = Utils.Read<long>(uncompressedData, dataIndex, dimensionSize);
+                                            break;
+                                        }
+
+                                    case interpretationType.uint8_t:
+                                        {
+                                            dimensionValue = Utils.Read<byte>(uncompressedData, dataIndex, dimensionSize);
+                                            break;
+                                        }
+
+                                    case interpretationType.uint16_t:
+                                        {
+                                            dimensionValue = Utils.Read<ushort>(uncompressedData, dataIndex, dimensionSize);
+                                            break;
+                                        }
+
+                                    case interpretationType.uint32_t:
+                                        {
+                                            dimensionValue = Utils.Read<uint>(uncompressedData, dataIndex, dimensionSize);
+                                            break;
+                                        }
+
+                                    case interpretationType.uint64_t:
+                                        {
+                                            dimensionValue = Utils.Read<ulong>(uncompressedData, dataIndex, dimensionSize);
+                                            break;
+                                        }
+
+                                    default:
+                                        throw new InvalidOperationException("Type " + dimension.interpretation + " is not supported");
+                                }
+
+
                                 Patch.Points[pointIndex][dimension.name] = dimensionValue;
                                 dataIndex += dimensionSize;
                             }
