@@ -3,9 +3,7 @@ using Pgpointcloud4dotnet.Schema;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 
 namespace Pgpointcloud4dotnet
@@ -32,195 +30,30 @@ namespace Pgpointcloud4dotnet
 
         public Patch DeserializePatchFromWkb(byte[] wkb)
         {
-            //byte endianness = wkb[0];
+            PatchHeaderReader headerReader = new PatchHeaderReader(this, wkb);
 
-            int index = 0;
+            PatchDataReader dataReader = null;
 
-            // Read endianess
-            index += 1;
-
-            // Read pcid
-            uint pcid = Utils.Read<uint>(wkb, index, 4);
-            index += 4;
-
-            // Read compression
-            uint compression = Utils.Read<uint>(wkb, index, 4);
-            index += 4;
-
-            // Read number of points
-            uint numberOfPoints = Utils.Read<uint>(wkb, index, 4);
-            index += 4;
-
-            Patch patch = new Patch(numberOfPoints);
-
-            switch (compression)
+            switch (headerReader.Compression)
             {
                 case 0:
                     {
-                        for (int i = 0; i < numberOfPoints; i++)
-                        {
-                            int newIndex;
-                            Point point = DeserializePointFromBinaryData(wkb, index, out newIndex);
-                            patch.AddPoint(point);
-                            index = newIndex;
-                        }
+                        dataReader = new PatchUncompressedDataReader(headerReader);
                         break;
                     }
 
                 case 1:
                     {
-                        for (int i = 0; i < numberOfPoints; i++)
-                        {
-                            patch.AddPoint(new Point());
-                        }
-                        List<dimensionType> dimensions = dimension
-                                                            .OrderBy(x => Convert.ToInt32(x.position))
-                                                            .ToList();
-
-                        foreach (var dimension in dimensions)
-                        {
-                            // Read compression type
-                            byte compressionType = Utils.Read<byte>(wkb, index, 1);
-                            index += 1;
-
-                            // Read size of compressed data
-                            uint sizeOfCompressedData = Utils.Read<uint>(wkb, index, 4);
-                            index += 4;
-
-                            switch (compressionType)
-                            {
-                                case 0:
-                                    {
-                                        throw new InvalidOperationException();
-                                        break;
-                                    }
-                                case 1:
-                                    {
-                                        throw new InvalidOperationException();
-                                        break;
-                                    }
-                                case 2:
-                                    {
-                                        throw new InvalidOperationException();
-                                        break;
-                                    }
-                                case 3:
-                                    {
-                                        Span<byte> compressedDimensionData = new Span<byte>(wkb, index, (int)sizeOfCompressedData);
-                                        index += (int)sizeOfCompressedData;
-
-                                        byte[] uncompressedData = ZlibStream.UncompressBuffer(compressedDimensionData.ToArray());
-
-                                        int dimensionSize = Utils.GetDimensionSize(dimension);
-
-                                        int dataIndex = 0;
-                                        for (int pointIndex = 0; pointIndex < numberOfPoints; pointIndex++)
-                                        {
-                                            float dimensionValue = Utils.Read<float>(uncompressedData, dataIndex, dimensionSize);
-                                            patch.Points[pointIndex][dimension.name] = dimensionValue;
-                                            dataIndex += dimensionSize;
-                                        }
-
-                                        break;
-                                    }
-                                default:
-                                    throw new InvalidOperationException();
-                            }
-                        }
-
+                        dataReader = new PatchDimensionalDataReader(headerReader);
                         break;
                     }
 
                 default:
                     throw new InvalidOperationException();
             }
+            dataReader.FillPatch();
 
-            return patch;
-        }
-
-        private Point DeserializePointFromBinaryData(byte[] wkb, int startIndex, out int newIndex)
-        {
-            int index = startIndex;
-            Point point = new Point();
-
-            IEnumerable<dimensionType> dimensions = dimension.OrderBy(x => Convert.ToInt32(x.position));
-            foreach (var d in dimensions)
-            {
-                object newValue = null;
-                int dimensionSize = Utils.GetDimensionSize(d);
-
-                switch (d.interpretation)
-                {
-
-                    case interpretationType.@float:
-                        {
-                            newValue = ExtractValue<float>(d, wkb, index, dimensionSize);
-                            break;
-                        }
-
-                    case interpretationType.@double:
-                        {
-                            newValue = ExtractValue<double>(d, wkb, index, dimensionSize);
-                            break;
-                        }
-
-                    case interpretationType.int8_t:
-                        {
-                            newValue = ExtractValue<sbyte>(d, wkb, index, dimensionSize);
-                            break;
-                        }
-
-                    case interpretationType.int16_t:
-                        {
-                            newValue = ExtractValue<short>(d, wkb, index, dimensionSize);
-                            break;
-                        }
-
-                    case interpretationType.int32_t:
-                        {
-                            newValue = ExtractValue<int>(d, wkb, index, dimensionSize);
-                            break;
-                        }
-
-                    case interpretationType.int64_t:
-                        {
-                            newValue = ExtractValue<long>(d, wkb, index, dimensionSize);
-                            break;
-                        }
-
-                    case interpretationType.uint8_t:
-                        {
-                            newValue = ExtractValue<byte>(d, wkb, index, dimensionSize);
-                            break;
-                        }
-
-                    case interpretationType.uint16_t:
-                        {
-                            newValue = ExtractValue<ushort>(d, wkb, index, dimensionSize);
-                            break;
-                        }
-
-                    case interpretationType.uint32_t:
-                        {
-                            newValue = ExtractValue<uint>(d, wkb, index, dimensionSize);
-                            break;
-                        }
-
-                    case interpretationType.uint64_t:
-                        {
-                            newValue = ExtractValue<ulong>(d, wkb, index, dimensionSize);
-                            break;
-                        }
-
-                    default:
-                        throw new InvalidOperationException("Type " + d.interpretation + " is not supported");
-                }
-
-                point[d.name] = newValue;
-                index += dimensionSize;
-            }
-            newIndex = index;
-            return point;
+            return headerReader.Patch;
         }
 
         public Point DeserializePointFromWkb(string wkbAsString)

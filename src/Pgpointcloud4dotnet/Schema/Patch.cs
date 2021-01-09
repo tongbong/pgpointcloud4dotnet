@@ -7,11 +7,13 @@ namespace Pgpointcloud4dotnet
 {
     public class Patch
     {
+        public int NumberOfPoints { get; }
 
         private List<Point> _points;
 
         internal Patch(uint numberOfPoints)
         {
+            NumberOfPoints = (int)numberOfPoints;
             _points = new List<Point>((int)numberOfPoints);
         }
 
