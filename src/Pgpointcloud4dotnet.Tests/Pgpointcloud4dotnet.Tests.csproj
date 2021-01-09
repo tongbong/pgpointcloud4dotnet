@@ -14,6 +14,7 @@
     <None Remove="Models\Model_For_32bits_Integer.xml" />
     <None Remove="Models\Model_For_64bits_Integer.xml" />
     <None Remove="Models\Model_For_8bits_Integer.xml" />
+    <None Remove="Models\Model_For_Active.xml" />
     <None Remove="Models\UnsignedIntegers\Model_For_16bits_UnsignedInteger.xml" />
     <None Remove="Models\UnsignedIntegers\Model_For_32bits_UnsignedInteger.xml" />
     <None Remove="Models\UnsignedIntegers\Model_For_64bits_UnsignedInteger.xml" />
@@ -37,6 +38,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Models\Integers\Model_For_8bits_Integer.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\Model_For_Active.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Models\Model1.xml">

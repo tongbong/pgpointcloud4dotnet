@@ -47,3 +47,7 @@ jobs:
           dotnet build --configuration Release --no-restore .\src\Pgpointcloud4dotnet.sln
           dotnet test .\src\Pgpointcloud4dotnet.sln /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+      - name: Test
+        shell: powershell
+        run: |
+          dotnet test .\src\Pgpointcloud4dotnet.sln

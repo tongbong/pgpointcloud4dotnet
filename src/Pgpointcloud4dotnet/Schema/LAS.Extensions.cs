@@ -50,76 +50,77 @@ namespace Pgpointcloud4dotnet
                     case interpretationType.@float:
                         {
                             step = 4;
-                            newValue = ExtractValue<float>(wkb, index, step);
+                            newValue = ExtractValue<float>(d, wkb, index, step);
                             break;
                         }
 
                     case interpretationType.@double:
                         {
                             step = 8;
-                            newValue = ExtractValue<double>(wkb, index, step);
+                            newValue = ExtractValue<double>(d, wkb, index, step);
                             break;
                         }
 
                     case interpretationType.int8_t:
                         {
                             step = 1;
-                            newValue = ExtractValue<sbyte>(wkb, index, step);
+                            newValue = ExtractValue<sbyte>(d, wkb, index, step);
                             break;
                         }
 
                     case interpretationType.int16_t:
                         {
                             step = 2;
-                            newValue = ExtractValue<short>(wkb, index, step);
+                            newValue = ExtractValue<short>(d, wkb, index, step);
                             break;
                         }
 
                     case interpretationType.int32_t:
                         {
                             step = 4;
-                            newValue = ExtractValue<int>(wkb, index, step);
+                            newValue = ExtractValue<int>(d, wkb, index, step);
                             break;
                         }
 
                     case interpretationType.int64_t:
                         {
                             step = 8;
-                            newValue = ExtractValue<long>(wkb, index, step);
+                            newValue = ExtractValue<long>(d, wkb, index, step);
                             break;
                         }
 
                     case interpretationType.uint8_t:
                         {
                             step = 1;
-                            newValue = ExtractValue<byte>(wkb, index, step);
+                            newValue = ExtractValue<byte>(d, wkb, index, step);
                             break;
                         }
 
                     case interpretationType.uint16_t:
                         {
                             step = 2;
-                            newValue = ExtractValue<ushort>(wkb, index, step);
+                            newValue = ExtractValue<ushort>(d, wkb, index, step);
                             break;
                         }
 
                     case interpretationType.uint32_t:
                         {
                             step = 4;
-                            newValue = ExtractValue<uint>(wkb, index, step);
+                            newValue = ExtractValue<uint>(d, wkb, index, step);
                             break;
                         }
 
                     case interpretationType.uint64_t:
                         {
                             step = 8;
-                            newValue = ExtractValue<ulong>(wkb, index, step);
+                            newValue = ExtractValue<ulong>(d, wkb, index, step);
                             break;
                         }
 
                     default:
                         throw new InvalidOperationException("Type " + d.interpretation + " is not supported");
                 }
+
                 point[d.name] = newValue;
                 index += step;
             }
@@ -135,9 +136,13 @@ namespace Pgpointcloud4dotnet
             return bytes;
         }
 
-        private static T ExtractValue<T>(byte[] wkb, int index, int step)
+        private static T ExtractValue<T>(dimensionType d, byte[] wkb, int index, int step)
             where T : struct
         {
+            if (!d.active)
+            {
+                return default(T);
+            }
             Span<byte> intAsBytes = new Span<byte>(wkb, index, step);
             return MemoryMarshal.Read<T>(intAsBytes);
         }

@@ -19,7 +19,6 @@ namespace Pgpointcloud4dotnet {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.4084.0")]
     [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://pointcloud.org/schemas/PC/1.1")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="http://pointcloud.org/schemas/PC/1.1", IsNullable=false)]

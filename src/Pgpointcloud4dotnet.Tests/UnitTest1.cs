@@ -92,6 +92,14 @@ namespace Pgpointcloud4dotnet.Tests
             Assert.Equal((double)10.5, point.DimensionAsDouble("A"), 1);
         }
 
+        [Fact]
+        public void Deserialize_Active()
+        {
+            Point point = Deserialize("010D000000000020410000A040", "Models/Model_For_Active.xml");
+            Assert.Equal((float)0, point.DimensionAsFloat("X"), 1);
+            Assert.Equal((float)5, point.DimensionAsFloat("Y"), 1);
+        }
+
         //[Fact]
         //public void Foo()
         //{
