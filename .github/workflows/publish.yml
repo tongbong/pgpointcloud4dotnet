@@ -1,0 +1,29 @@
+name: Publish
+
+on:
+  workflow_run:
+    workflows: ["Build"]
+    branches: [ develop ]
+    types:
+      - completed
+
+jobs:
+  build:
+    name: Build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Build
+        shell: powershell
+        run: |
+          dotnet restore .\src\Pgpointcloud4dotnet.sln
+          dotnet build --configuration Release --no-restore .\src\Pgpointcloud4dotnet.sln
+      - name: Publish
+      uses: brandedoutcast/publish-nuget@v2
+      with:
+        PROJECT_FILE_PATH: .\src\Pgpointcloud4dotnet\Pgpointcloud4dotnet.csproj
+        VERSION_REGEX: '^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$'
+        TAG_FORMAT: '*'
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
