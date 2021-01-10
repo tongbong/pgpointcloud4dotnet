@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Models\Patches\Dimensional\Deflate\Integers\Model_16bits.xml" />
+    <None Remove="Models\Patches\Dimensional\Deflate\Integers\Model_32bits.xml" />
+    <None Remove="Models\Patches\Dimensional\Deflate\Integers\Model_64bits.xml" />
+    <None Remove="Models\Patches\Dimensional\Deflate\Integers\Model_8bits.xml" />
+    <None Remove="Models\Patches\Dimensional\Deflate\UnsignedIntegers\Model_16bits.xml" />
+    <None Remove="Models\Patches\Dimensional\Deflate\UnsignedIntegers\Model_32bits.xml" />
+    <None Remove="Models\Patches\Dimensional\Deflate\UnsignedIntegers\Model_64bits.xml" />
+    <None Remove="Models\Patches\Dimensional\Deflate\UnsignedIntegers\Model_8bits.xml" />
     <None Remove="Models\Patches\Model_Dimensional_Deflate_32Bits_FloatingPoint.xml" />
     <None Remove="Models\Patches\Model_Dimensional_Deflate_64bits_FloatingPoint.xml" />
     <None Remove="Models\Patches\Model_NoCompression.xml" />
@@ -25,10 +33,34 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Models\Patches\Model_Dimensional_Deflate_64bits_FloatingPoint.xml">
+    <Content Include="Models\Patches\Dimensional\Deflate\FloatingPoints\Model_64bits.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\Patches\Model_Dimensional_Deflate_32bits_FloatingPoint.xml">
+    <Content Include="Models\Patches\Dimensional\Deflate\FloatingPoints\Model_32bits.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\Patches\Dimensional\Deflate\Integers\Model_16bits.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\Patches\Dimensional\Deflate\Integers\Model_32bits.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\Patches\Dimensional\Deflate\Integers\Model_64bits.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\Patches\Dimensional\Deflate\Integers\Model_8bits.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\Patches\Dimensional\Deflate\UnsignedIntegers\Model_16bits.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\Patches\Dimensional\Deflate\UnsignedIntegers\Model_32bits.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\Patches\Dimensional\Deflate\UnsignedIntegers\Model_64bits.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\Patches\Dimensional\Deflate\UnsignedIntegers\Model_8bits.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Models\Patches\Model_NoCompression.xml">

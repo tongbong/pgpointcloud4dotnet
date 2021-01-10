@@ -1,7 +1,9 @@
 ﻿using Ionic.Zlib;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Pgpointcloud4dotnet.Schema
 {
@@ -62,6 +64,16 @@ namespace Pgpointcloud4dotnet.Schema
                             index += (int)sizeOfCompressedData;
 
                             byte[] uncompressedData = ZlibStream.UncompressBuffer(compressedDimensionData.ToArray());
+                            //byte[] uncompressedData = null;
+
+                            //var outputStream = new MemoryStream();
+                            //using (var compressedStream = new MemoryStream(compressedDimensionData.ToArray()))
+                            //using (var inputStream = new InflaterInputStream(compressedStream))
+                            //{
+                            //    inputStream.CopyTo(outputStream);
+                            //    outputStream.Position = 0;
+                            //    uncompressedData = outputStream.ToArray();
+                            //}
 
                             int dimensionSize = Utils.GetDimensionSize(dimension);
 
@@ -92,7 +104,7 @@ namespace Pgpointcloud4dotnet.Schema
 
                                     case interpretationType.int16_t:
                                         {
-                                            dimensionValue = Utils.Read<ushort>(uncompressedData, dataIndex, dimensionSize);
+                                            dimensionValue = Utils.Read<short>(uncompressedData, dataIndex, dimensionSize);
                                             break;
                                         }
 
