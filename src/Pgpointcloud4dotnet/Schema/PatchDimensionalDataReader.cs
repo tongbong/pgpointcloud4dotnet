@@ -1,15 +1,13 @@
 ﻿using Ionic.Zlib;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace Pgpointcloud4dotnet.Schema
 {
     internal class PatchDimensionalDataReader : PatchDataReader
     {
-        private PatchHeaderReader _headerReader;
+        private readonly PatchHeaderReader _headerReader;
 
         private int index = 0;
 

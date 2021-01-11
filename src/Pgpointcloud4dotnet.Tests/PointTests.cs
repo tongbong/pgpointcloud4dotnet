@@ -1,6 +1,4 @@
 using System;
-using System.IO;
-using System.Xml.Serialization;
 using Xunit;
 
 namespace Pgpointcloud4dotnet.Tests
@@ -14,13 +12,6 @@ namespace Pgpointcloud4dotnet.Tests
             Point point = schema.DeserializePointFromWkb(wkb);
             return point;
         }
-
-        //[Fact]
-        //public void LoadModel_Ok()
-        //{
-        //    PointCloudSchema schema = LoadSchemaFromFile("Models/Model1.xml");
-        //    Assert.NotNull(schema);
-        //}
 
         [Fact]
         public void Deserialize_8bits_Integer()
