@@ -42,7 +42,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"tongbong_pgpointcloud4dotnet" /o:"tongbong-github" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.exclusions=".\src\Pgpointcloud4dotnet\Schema\Zlib\**.cs" /d:sonar.coverage.exclusions="**Test*.cs" /d:sonar.cs.opencover.reportsPaths="src\Pgpointcloud4dotnet.Tests\coverage.opencover.xml"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"tongbong_pgpointcloud4dotnet" /o:"tongbong-github" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.exclusions=".\src\Pgpointcloud4dotnet\Schema\Zlib\**\*" /d:sonar.coverage.exclusions="**Test*.cs" /d:sonar.cs.opencover.reportsPaths="src\Pgpointcloud4dotnet.Tests\coverage.opencover.xml"
           dotnet restore .\src\Pgpointcloud4dotnet.sln
           dotnet build --configuration Release --no-restore .\src\Pgpointcloud4dotnet.sln
           dotnet test .\src\Pgpointcloud4dotnet.sln /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
