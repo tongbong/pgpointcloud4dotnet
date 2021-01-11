@@ -48,7 +48,96 @@ namespace Pgpointcloud4dotnet.Schema
                         }
                     case 1:
                         {
-                            throw new InvalidOperationException();
+                            byte wordRepeats = Utils.Read<byte>(_headerReader.Wkb, index, 1);
+                            index += 1;
+
+                            object dimensionValue = null;
+
+                            switch (dimension.interpretation)
+                            {
+                                case interpretationType.@float:
+                                    {
+                                        dimensionValue = Utils.Read<float>(_headerReader.Wkb, index, 4);
+                                        index += 4;
+                                        break;
+                                    }
+
+                                case interpretationType.@double:
+                                    {
+                                        dimensionValue = Utils.Read<double>(_headerReader.Wkb, index, 8);
+                                        index += 8;
+                                        break;
+                                    }
+
+                                case interpretationType.int8_t:
+                                    {
+                                        dimensionValue = Utils.Read<sbyte>(_headerReader.Wkb, index, 1);
+                                        index += 1;
+                                        break;
+                                    }
+
+                                case interpretationType.int16_t:
+                                    {
+                                        dimensionValue = Utils.Read<short>(_headerReader.Wkb, index, 2);
+                                        index += 2;
+                                        break;
+                                    }
+
+                                case interpretationType.int32_t:
+                                    {
+                                        dimensionValue = Utils.Read<int>(_headerReader.Wkb, index, 4);
+                                        index += 4;
+                                        break;
+                                    }
+
+                                case interpretationType.int64_t:
+                                    {
+                                        dimensionValue = Utils.Read<long>(_headerReader.Wkb, index, 8);
+                                        index += 8;
+                                        break;
+                                    }
+
+                                case interpretationType.uint8_t:
+                                    {
+                                        dimensionValue = Utils.Read<byte>(_headerReader.Wkb, index, 1);
+                                        index += 1;
+                                        break;
+                                    }
+
+                                case interpretationType.uint16_t:
+                                    {
+                                        dimensionValue = Utils.Read<ushort>(_headerReader.Wkb, index, 2);
+                                        index += 2;
+                                        break;
+                                    }
+
+                                case interpretationType.uint32_t:
+                                    {
+                                        dimensionValue = Utils.Read<uint>(_headerReader.Wkb, index, 4);
+                                        index += 4;
+                                        break;
+                                    }
+
+                                case interpretationType.uint64_t:
+                                    {
+                                        dimensionValue = Utils.Read<ulong>(_headerReader.Wkb, index, 8);
+                                        index += 8;
+                                        break;
+                                    }
+
+                                default:
+                                    throw new InvalidOperationException("Type " + dimension.interpretation + " is not supported");
+                            }
+
+                            if (dimensionValue != null)
+                            {
+                                foreach (var p in Patch.Points)
+                                {
+                                    p[dimension.name] = dimensionValue;
+                                }
+                            }
+
+                            //throw new InvalidOperationException();
                             break;
                         }
                     case 2:
@@ -62,17 +151,6 @@ namespace Pgpointcloud4dotnet.Schema
                             index += (int)sizeOfCompressedData;
 
                             byte[] uncompressedData = ZlibStream.UncompressBuffer(compressedDimensionData.ToArray());
-                            //byte[] uncompressedData = null;
-
-                            //var outputStream = new MemoryStream();
-                            //using (var compressedStream = new MemoryStream(compressedDimensionData.ToArray()))
-                            //using (var inputStream = new InflaterInputStream(compressedStream))
-                            //{
-                            //    inputStream.CopyTo(outputStream);
-                            //    outputStream.Position = 0;
-                            //    uncompressedData = outputStream.ToArray();
-                            //}
-
                             int dimensionSize = Utils.GetDimensionSize(dimension);
 
                             int dataIndex = 0;
