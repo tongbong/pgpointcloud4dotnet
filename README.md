@@ -5,12 +5,12 @@
 Schema
 | Attribute | Supported |
 |:---------------:|:-------------:|
-| position        | x             |
+| position        | ongoing       |
 | size            | x             |
-| name            | x             |
+| name            | ongoing       |
 | description     | x             |
-| active          | x             |
-| interpretation  | x             |
+| active          | ongoing       |
+| interpretation  | ongoing       |
 | minimum         | x             |
 | maximum         | x             |
 | offset          | x             |
@@ -23,13 +23,11 @@ Schema
 Point
 | Deserialization | Serialization |
 |:---------------:|:-------------:|
-| x               | x             |
-| x               | x             |
-| x               | x             |
+| ongoing         | x             |
 
 Patch
 | Compression  | Deserialization | Serialization |
 |:------------:|:---------------:|:-------------:|
-| Uncompressed | x               | x             |
-| Dimensional  | x               | x             |
+| Uncompressed | ongoing         | x             |
+| Dimensional  | ongoing         | x             |
 | LAZ          | x               | x             |
