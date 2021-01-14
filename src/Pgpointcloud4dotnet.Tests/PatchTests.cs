@@ -288,63 +288,61 @@ namespace Pgpointcloud4dotnet.Tests
         [Fact]
         public void Deserialize_Patch_Dimensional_Sigbits_SByte()
         {
-            Patch patch = Deserialize("010200000001000000020000000203000000010A40030800000078DAE3E70700002F",
+            Patch patch = Deserialize("01090000000100000005000000020400000003084E5C0203000000000F00",
                                         "Models/Patches/Model_Integer_8bits.xml");
-            Point p1 = patch.Points[0];
-            Point p2 = patch.Points[1];
-            Assert.Equal((sbyte)5, p1.DimensionAsSbyte("X"));
-            Assert.Equal((sbyte)5, p1.DimensionAsSbyte("Y"));
-            Assert.Equal((sbyte)5, p2.DimensionAsSbyte("X"));
-            Assert.Equal((sbyte)5, p2.DimensionAsSbyte("Y"));
+            Assert.Equal((sbyte)10, patch.Points[0].DimensionAsSbyte("X"));
+            Assert.Equal((sbyte)11, patch.Points[1].DimensionAsSbyte("X"));
+            Assert.Equal((sbyte)12, patch.Points[2].DimensionAsSbyte("X"));
+            Assert.Equal((sbyte)13, patch.Points[3].DimensionAsSbyte("X"));
+            Assert.Equal((sbyte)14, patch.Points[4].DimensionAsSbyte("X"));
         }
 
         [Fact]
         public void Deserialize_Patch_Dimensional_Sigbits_Short()
         {
-            Patch patch = Deserialize("0110000000010000000A00000001030000000A050001030000000A050",
+            Patch patch = Deserialize("010E00000001000000050000000206000000030008005C4E020600000000000F000000",
                                         "Models/Patches/Model_Integer_16bits.xml");
-            Point p1 = patch.Points[0];
-            Point p2 = patch.Points[1];
-            Assert.Equal((short)5, p1.DimensionAsShort("X"));
-            Assert.Equal((short)5, p1.DimensionAsShort("Y"));
-            Assert.Equal((short)5, p2.DimensionAsShort("X"));
-            Assert.Equal((short)5, p2.DimensionAsShort("Y"));
+            Assert.Equal((short)10, patch.Points[0].DimensionAsShort("X"));
+            Assert.Equal((short)11, patch.Points[1].DimensionAsShort("X"));
+            Assert.Equal((short)12, patch.Points[2].DimensionAsShort("X"));
+            Assert.Equal((short)13, patch.Points[3].DimensionAsShort("X"));
+            Assert.Equal((short)14, patch.Points[4].DimensionAsShort("X"));
         }
 
         [Fact]
         public void Deserialize_Patch_Dimensional_Sigbits_Int()
         {
-            Patch patch = Deserialize("010F000000010000000A00000001050000000A0500000001050000000A0500000",
+            Patch patch = Deserialize("010B0000000100000005000000020C000000030000000800000000005C4E020C000000000000000F00000000000000",
                                         "Models/Patches/Model_Integer_32bits.xml");
-            Point p1 = patch.Points[0];
-            Point p2 = patch.Points[1];
-            Assert.Equal(5, p1.DimensionAsInt("X"));
-            Assert.Equal(5, p1.DimensionAsInt("Y"));
-            Assert.Equal(5, p2.DimensionAsInt("X"));
-            Assert.Equal(5, p2.DimensionAsInt("Y"));
+            Assert.Equal(10, patch.Points[0].DimensionAsInt("X"));
+            Assert.Equal(11, patch.Points[1].DimensionAsInt("X"));
+            Assert.Equal(12, patch.Points[2].DimensionAsInt("X"));
+            Assert.Equal(13, patch.Points[3].DimensionAsInt("X"));
+            Assert.Equal(14, patch.Points[4].DimensionAsInt("X")); 
         }
 
         [Fact]
         public void Deserialize_Patch_Dimensional_Sigbits_Long()
         {
-            Patch patch = Deserialize("0111000000010000000A00000001090000000A050000000000000001090000000A050000000000000",
+            Patch patch = Deserialize("010C00000001000000050000000218000000030000000000000008000000000000000000000000005C4E0109000000050F00000000000000",
                                         "Models/Patches/Model_Integer_64bits.xml");
-            Point p1 = patch.Points[0];
-            Point p2 = patch.Points[1];
-            Assert.Equal(5, p1.DimensionAsLong("X"));
-            Assert.Equal(5, p1.DimensionAsLong("Y"));
-            Assert.Equal(5, p2.DimensionAsLong("X"));
-            Assert.Equal(5, p2.DimensionAsLong("Y"));
+            Assert.Equal((long)10, patch.Points[0].DimensionAsLong("X"));
+            Assert.Equal((long)11, patch.Points[1].DimensionAsLong("X"));
+            Assert.Equal((long)12, patch.Points[2].DimensionAsLong("X"));
+            Assert.Equal((long)13, patch.Points[3].DimensionAsLong("X"));
+            Assert.Equal((long)14, patch.Points[4].DimensionAsLong("X"));
         }
 
         [Fact]
         public void Deserialize_Patch_Dimensional_Sigbits_Byte()
         {
-            Patch patch = Deserialize("010300000001000000010000000203000000000A00030400000078DAE307",
+            Patch patch = Deserialize("010D0000000100000005000000020400000003084E5C0203000000000F00",
                                         "Models/Patches/Model_UnsignedInteger_8bits.xml");
-            Point p = patch.Points[0];
-            Assert.Equal((byte)10, p.DimensionAsByte("X"));
-            Assert.Equal((byte)15, p.DimensionAsByte("Y"));
+            Assert.Equal((byte)10, patch.Points[0].DimensionAsByte("X"));
+            Assert.Equal((byte)11, patch.Points[1].DimensionAsByte("X"));
+            Assert.Equal((byte)12, patch.Points[2].DimensionAsByte("X"));
+            Assert.Equal((byte)13, patch.Points[3].DimensionAsByte("X"));
+            Assert.Equal((byte)14, patch.Points[4].DimensionAsByte("X"));
         }
 
         [Fact]
@@ -398,14 +396,13 @@ namespace Pgpointcloud4dotnet.Tests
         [Fact]
         public void Deserialize_Patch_Dimensional_Sigbits_Double()
         {
-            Patch patch = Deserialize("0114000000010000000A000000031000000078DA636000011107062AD1007A800349031000000078D36000011107062AD1007A800349",
+            Patch patch = Deserialize("010F000000010000000500000002380000003400000000000000000000000000204066363333333333439999896666666666CCCCCCCCAA9999990000000000D0CDCC0000000000000000031000000078DA636000013D070602340025940227",
                                         "Models/Patches/Model_FloatingPoint_64bits.xml");
-            Point p1 = patch.Points[0];
-            Point p2 = patch.Points[1];
-            Assert.Equal(5, p1.DimensionAsDouble("X"));
-            Assert.Equal(5, p1.DimensionAsDouble("Y"));
-            Assert.Equal(5, p2.DimensionAsDouble("X"));
-            Assert.Equal(5, p2.DimensionAsDouble("Y"));
+            Assert.Equal(10.1, patch.Points[0].DimensionAsDouble("X"));
+            Assert.Equal(11.2, patch.Points[1].DimensionAsDouble("X"));
+            Assert.Equal(12.3, patch.Points[2].DimensionAsDouble("X"));
+            Assert.Equal(13.4, patch.Points[3].DimensionAsDouble("X"));
+            Assert.Equal(14.5, patch.Points[4].DimensionAsDouble("X"));
         }
     }
 
