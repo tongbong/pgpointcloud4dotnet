@@ -1,6 +1,7 @@
 ﻿using Ionic.Zlib;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Pgpointcloud4dotnet.Schema
@@ -47,7 +48,8 @@ namespace Pgpointcloud4dotnet.Schema
                         HandleRunLengthCompressedData(dimension);
                         break;
                     case DimensionalCompression.SignificantBitsRemoval:
-                        throw new InvalidOperationException();
+                        HandleSigbitsCompressedData(dimension);
+                        break;
                     case DimensionalCompression.Deflate:
                         HandleDeflateCompressedDate(dimension, sizeOfCompressedData);
                         break;
@@ -55,6 +57,333 @@ namespace Pgpointcloud4dotnet.Schema
                         throw new InvalidOperationException();
                 }
             }
+        }
+
+        //pc_bytes_sigbits_decode_8
+        private void HandleSigbitsCompressedData(dimensionType dimension)
+        {
+            int dimensionSize = Utils.GetDimensionSize(dimension);
+
+            switch (dimension.interpretation)
+            {
+                case interpretationType.@float:
+                    HandleSigbitsCompressedDataForFloat(dimension, dimensionSize);
+                    break;
+                case interpretationType.@double:
+                    HandleSigbitsCompressedDataForDouble(dimension, dimensionSize);
+                    break;
+                case interpretationType.int8_t:
+                    HandleSigbitsCompressedDataForSbyte(dimension, dimensionSize);
+                    break;
+                case interpretationType.int16_t:
+                    HandleSigbitsCompressedDataForShort(dimension, dimensionSize);
+                    break;
+                case interpretationType.int32_t:
+                    HandleSigbitsCompressedDataForInt(dimension, dimensionSize);
+                    break;
+                case interpretationType.int64_t:
+                    HandleSigbitsCompressedDataForLong(dimension, dimensionSize);
+                    break;
+                case interpretationType.uint8_t:
+                    HandleSigbitsCompressedDataForByte(dimension, dimensionSize);
+                    break;
+                case interpretationType.uint16_t:
+                    HandleSigbitsCompressedDataForUShort(dimension, dimensionSize);
+                    break;
+                case interpretationType.uint32_t:
+                    HandleSigbitsCompressedDataForUint(dimension, dimensionSize);
+                    break;
+                case interpretationType.uint64_t:
+                    HandleSigbitsCompressedDataForUlong(dimension, dimensionSize);
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        private void HandleSigbitsCompressedDataForUlong(dimensionType dimension, int dimensionSize)
+        {
+            int bitwidth = 64;
+            int bit = bitwidth;
+
+            /* How many unique bits? */
+            ulong numberOfVariableBitsInThisDimension = Utils.Read<ulong>(_headerReader.Wkb, index, dimensionSize);
+            index += dimensionSize;
+            /* What is the shared bit value? */
+            ulong theBitsThatAreSharedByEveryWordInThisDimension = Utils.Read<ulong>(_headerReader.Wkb, index, dimensionSize);
+            index += dimensionSize;
+            /* Calculate mask */
+            ulong mask = (0xFFFFFFFF >> (bit - (int)numberOfVariableBitsInThisDimension));
+
+            for (int i = 0; i < Patch.Points.Count; i++)
+            {
+                int shift = bit - (int)numberOfVariableBitsInThisDimension;
+                ulong val = Utils.Read<ulong>(_headerReader.Wkb, index, dimensionSize);
+                if (shift >= 0)
+                {
+                    val >>= shift;
+                    val &= mask;
+                    val |= theBitsThatAreSharedByEveryWordInThisDimension;
+                    Patch.Points[i][dimension.name] = val;
+                    bit -= (int)numberOfVariableBitsInThisDimension;
+                    if (bit <= 0)
+                    {
+                        index += dimensionSize;
+                        bit = bitwidth;
+                    }
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                    //int s = abs(shift);
+                    //val <<= s;
+                    //val &= mask;
+                    //val |= commonvalue;
+                    //obytes[i] = val;
+                    //bytes_ptr++;
+                    //bit = bitwidth;
+                    //val = *bytes_ptr;
+                    //shift = bit - s;
+                    //val >>= shift;
+                    //val &= mask;
+                    //bit -= s;
+                    //obytes[i] |= val;
+                }
+            }
+            index += dimensionSize;
+        }
+
+        private void HandleSigbitsCompressedDataForUint(dimensionType dimension, int dimensionSize)
+        {
+            int bitwidth = 32;
+            int bit = bitwidth;
+
+            /* How many unique bits? */
+            uint numberOfVariableBitsInThisDimension = Utils.Read<uint>(_headerReader.Wkb, index, dimensionSize);
+            index += dimensionSize;
+            /* What is the shared bit value? */
+            uint theBitsThatAreSharedByEveryWordInThisDimension = Utils.Read<uint>(_headerReader.Wkb, index, dimensionSize);
+            index += dimensionSize;
+            /* Calculate mask */
+            uint mask = (0xFFFFFFFF >> (bit - (int)numberOfVariableBitsInThisDimension));
+
+            for (int i = 0; i < Patch.Points.Count; i++)
+            {
+                int shift = bit - (int)numberOfVariableBitsInThisDimension;
+                uint val = Utils.Read<uint>(_headerReader.Wkb, index, dimensionSize);
+                if (shift >= 0)
+                {
+                    val >>= shift;
+                    val &= mask;
+                    val |= theBitsThatAreSharedByEveryWordInThisDimension;
+                    Patch.Points[i][dimension.name] = val;
+                    bit -= (int)numberOfVariableBitsInThisDimension;
+                    if (bit <= 0)
+                    {
+                        index += dimensionSize;
+                        bit = bitwidth;
+                    }
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                    //int s = Math.Abs(shift);
+                    //val <<= s;
+                    //val &= mask;
+                    //val |= theBitsThatAreSharedByEveryWordInThisDimension;
+                    //index += dimensionSize;
+                    //bit = bitwidth;
+                    //uint val2 = Utils.Read<uint>(_headerReader.Wkb, index, dimensionSize);
+                    //shift = bit - s;
+                    //val2 >>= shift;
+                    //val2 &= mask;
+                    //bit -= s;
+                    //Patch.Points[i][dimension.name] = val | val2;
+                }
+            }
+            index += dimensionSize;
+        }
+
+        private void HandleSigbitsCompressedDataForLong(dimensionType dimension, int dimensionSize)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void HandleSigbitsCompressedDataForInt(dimensionType dimension, int dimensionSize)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void HandleSigbitsCompressedDataForShort(dimensionType dimension, int dimensionSize)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void HandleSigbitsCompressedDataForSbyte(dimensionType dimension, int dimensionSize)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void HandleSigbitsCompressedDataForDouble(dimensionType dimension, int dimensionSize)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void HandleSigbitsCompressedDataForFloat(dimensionType dimension, int dimensionSize)
+        {
+            int bitwidth = 32;
+            int bit = bitwidth;
+
+            /* How many unique bits? */
+            uint numberOfVariableBitsInThisDimension = Utils.Read<uint>(_headerReader.Wkb, index, dimensionSize);
+            index += dimensionSize;
+            /* What is the shared bit value? */
+            uint theBitsThatAreSharedByEveryWordInThisDimension = Utils.Read<uint>(_headerReader.Wkb, index, dimensionSize);
+            index += dimensionSize;
+            /* Calculate mask */
+            uint mask = (0xFFFFFFFF >> (bit - (int)numberOfVariableBitsInThisDimension));
+
+            for (int i = 0; i < Patch.Points.Count; i++)
+            {
+                int shift = bit - (int)numberOfVariableBitsInThisDimension;
+                uint val = Utils.Read<uint>(_headerReader.Wkb, index, dimensionSize);
+                if (shift >= 0)
+                {
+                    val >>= shift;
+                    val &= mask;
+                    val |= theBitsThatAreSharedByEveryWordInThisDimension;
+                    byte[] valueAsBytes = BitConverter.GetBytes(val);
+                    Patch.Points[i][dimension.name] = BitConverter.ToSingle(valueAsBytes);
+                    bit -= (int)numberOfVariableBitsInThisDimension;
+                    if (bit <= 0)
+                    {
+                        index += dimensionSize;
+                        bit = bitwidth;
+                    }
+                }
+                else
+                {
+                    int s = Math.Abs(shift);
+                    val <<= s;
+                    val &= mask;
+                    val |= theBitsThatAreSharedByEveryWordInThisDimension;
+                    index += dimensionSize;
+                    bit = bitwidth;
+                    uint val2 = Utils.Read<uint>(_headerReader.Wkb, index, dimensionSize);
+                    shift = bit - s;
+                    val2 >>= shift;
+                    val2 &= mask;
+                    bit -= s;
+                    val |= val2;
+                    byte[] valueAsBytes = BitConverter.GetBytes(val);
+                    Patch.Points[i][dimension.name] = BitConverter.ToSingle(valueAsBytes);
+                }
+            }
+            index += dimensionSize;
+        }
+
+        private void HandleSigbitsCompressedDataForUShort(dimensionType dimension, int dimensionSize)
+        {
+            int bitwidth = 16;
+            int bit = 16;
+
+            /* How many unique bits? */
+            ushort numberOfVariableBitsInThisDimension = Utils.Read<ushort>(_headerReader.Wkb, index, dimensionSize);
+            index += dimensionSize;
+            /* What is the shared bit value? */
+            ushort theBitsThatAreSharedByEveryWordInThisDimension = Utils.Read<ushort>(_headerReader.Wkb, index, dimensionSize);
+            index += dimensionSize;
+            /* Calculate mask */
+            ushort mask = (ushort)(0xFFFF >> (bit - numberOfVariableBitsInThisDimension));
+
+            for (int i = 0; i < Patch.Points.Count; i++)
+            {
+                int shift = bit - numberOfVariableBitsInThisDimension;
+                ushort val = Utils.Read<ushort>(_headerReader.Wkb, index, dimensionSize);
+                if (shift >= 0)
+                {
+                    val >>= shift;
+                    val &= mask;
+                    val |= theBitsThatAreSharedByEveryWordInThisDimension;
+                    Patch.Points[i][dimension.name] = val;
+                    bit -= numberOfVariableBitsInThisDimension;
+                    if (bit <= 0)
+                    {
+                        index += dimensionSize;
+                        bit = bitwidth;
+                    }
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                    //int s = Math.Abs(shift);
+                    //val <<= s;
+                    //val &= mask;
+                    //val |= theBitsThatAreSharedByEveryWordInThisDimension;
+                    //index += dimensionSize;
+                    //bit = bitwidth;
+                    //ushort val2 = Utils.Read<ushort>(_headerReader.Wkb, index, dimensionSize);
+                    //shift = bit - s;
+                    //val2 >>= shift;
+                    //val2 &= mask;
+                    //Patch.Points[i][dimension.name] = val | val2;
+                    //bit -= s;
+                }
+            }
+            index += dimensionSize;
+        }
+
+        private void HandleSigbitsCompressedDataForByte(dimensionType dimension, int dimensionSize)
+        {
+            byte numberOfVariableBitsInThisDimension = Utils.Read<byte>(_headerReader.Wkb, index, dimensionSize);
+            index += dimensionSize;
+
+            byte theBitsThatAreSharedByEveryWordInThisDimension = Utils.Read<byte>(_headerReader.Wkb, index, dimensionSize);
+            index += dimensionSize;
+
+            byte bit = 8;
+            byte mask = (byte)(0xFF >> (bit - numberOfVariableBitsInThisDimension));
+
+            for (int i = 0; i < Patch.Points.Count; i++)
+            {
+                int shift = bit - numberOfVariableBitsInThisDimension;
+
+                byte val = Utils.Read<byte>(_headerReader.Wkb, index, dimensionSize);
+
+                /* The unique part is all in this word */
+                if (shift >= 0)
+                {
+                    /* Push unique part to bottom of word */
+                    val >>= shift;
+                    /* Mask out any excess */
+                    val &= mask;
+                    /* Add in the common part */
+                    val |= theBitsThatAreSharedByEveryWordInThisDimension;
+                    /* Save */
+                    Patch.Points[i][dimension.name] = val;
+                    /* Move read head */
+                    bit -= numberOfVariableBitsInThisDimension;
+                }
+                /* The unique part is split over this word and the next */
+                else
+                {
+                    throw new NotImplementedException();
+                    //int s = Math.Abs(shift);
+                    //val <<= s;
+                    //val &= mask;
+                    //val |= theBitsThatAreSharedByEveryWordInThisDimension;
+                    //Patch.Points[i][dimension.name] = val;
+                    //index += dimensionSize;
+                    //bit = 8;
+                    //byte val2 = Utils.Read<byte>(_headerReader.Wkb, index, dimensionSize);
+                    //shift = bit - s;
+                    //val2 >>= shift;
+                    //val2 &= mask;
+                    //Patch.Points[i][dimension.name] = val | val2;
+                    //bit -= (byte)s;
+                }
+            }
+            index += dimensionSize;
         }
 
         private void HandleRunLengthCompressedData(dimensionType dimension)
